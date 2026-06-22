@@ -198,7 +198,7 @@ body{font-family:var(--font);background:var(--bg-tertiary);color:var(--text-prim
       </div>
 
       <div class="list-header">
-        <span>VOC 번호</span><span>VOC 제목</span><span>VOC 유형</span><span>상태</span><span>등록자</span><span>담당자</span><span>등록일</span>
+        <span>티켓번호</span><span>VOC 제목</span><span>VOC 유형</span><span>상태</span><span>등록자</span><span>담당자</span><span>등록일</span>
       </div>
       <div id="list-body"></div>
     </div>
@@ -484,7 +484,7 @@ function renderList(){
   }
   body.innerHTML = filtered.map(v=>`
     <div class="list-row" onclick="goToView('${v.id}')">
-      <div class="lr-id">${v.id}</div>
+      <div class="lr-id">${v.ticket||'-'}</div>
       <div class="lr-title">${v.title}</div>
       <div><span class="pill">${typeLabel[v.type]}</span></div>
       <div><span class="pill">${statusLabel[v.status]}</span></div>
