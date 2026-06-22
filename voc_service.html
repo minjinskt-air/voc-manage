@@ -80,8 +80,7 @@ body{font-family:var(--font);background:var(--bg-tertiary);color:var(--text-prim
 .status-section{padding:16px 20px}
 .sf-label{font-size:11px;color:var(--text-tertiary);margin-bottom:8px}
 .status-btns{display:flex;gap:6px;flex-wrap:wrap}
-.s-btn{font-size:12px;padding:6px 16px;border-radius:20px;border:1px solid var(--border);background:var(--bg);color:var(--text-secondary);cursor:pointer}
-.s-btn:hover{background:var(--bg-secondary)}
+.s-btn{font-size:12px;padding:6px 16px;border-radius:20px;border:1px solid var(--border);background:var(--bg);color:var(--text-secondary);cursor:default;pointer-events:none}
 .s-btn.cur-new{background:var(--blue-light);color:var(--blue);border-color:var(--blue-mid);font-weight:600}
 .s-btn.cur-review{background:var(--amber-light);color:var(--amber);border-color:#FAC775;font-weight:600}
 .s-btn.cur-done{background:var(--green-light);color:var(--green);border-color:#C0DD97;font-weight:600}
@@ -276,10 +275,10 @@ body{font-family:var(--font);background:var(--bg-tertiary);color:var(--text-prim
         <div class="status-section">
           <div class="sf-label">현재 상태</div>
           <div class="status-btns" id="status-btns">
-            <button class="s-btn" data-s="new" onclick="changeStatus('new')">접수</button>
-            <button class="s-btn" data-s="review" onclick="changeStatus('review')">처리중</button>
-            <button class="s-btn" data-s="done" onclick="changeStatus('done')">완료</button>
-            <button class="s-btn" data-s="hold" onclick="changeStatus('hold')">보류</button>
+            <button class="s-btn" data-s="new">접수</button>
+            <button class="s-btn" data-s="review">처리중</button>
+            <button class="s-btn" data-s="done">완료</button>
+            <button class="s-btn" data-s="hold">보류</button>
           </div>
           <div class="status-meta">
             <div><div class="sm-label">담당자</div><div class="sm-value muted" id="view-assignee">미배정</div></div>
