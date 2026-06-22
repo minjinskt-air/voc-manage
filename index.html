@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>VOC 관리</title>
+<link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
 <style>
 :root{
   --bg:#FFFFFF; --bg-secondary:#F7F6F3; --bg-tertiary:#F0EFEA; --border:#E3E2DC; --border-light:#EEEEE9;
@@ -123,19 +124,14 @@ body{font-family:var(--font);background:var(--bg-tertiary);color:var(--text-prim
 .tp.error-on{background:var(--red-light);color:var(--red);border-color:var(--red-border);font-weight:600}
 .tp.promo-on{background:var(--blue-light);color:var(--blue);border-color:var(--blue-mid);font-weight:600}
 .tp.general-on{background:var(--neutral-light);color:var(--neutral);border-color:#B4B2A9;font-weight:600}
-.hint{font-size:11px;color:var(--text-tertiary);margin-bottom:14px;padding:7px 10px;background:var(--bg-secondary);border-radius:var(--radius-md)}
+.tp.gangseong-on{background:#FDF0F0;color:#6B1212;border-color:#F0B8B8;font-weight:600}
 
-.sub-error{border:1px solid var(--red-border);border-radius:var(--radius-md);padding:16px;background:#FFF8F8}
-.sub-title{font-size:12px;font-weight:600;color:var(--red);margin-bottom:12px;padding-bottom:6px;border-bottom:1px solid var(--red-border)}
-.sub-divider{height:1px;background:var(--red-border);margin:14px 0}
-.imei-hd{display:grid;grid-template-columns:60px 1fr 80px 80px 68px;gap:8px;margin-bottom:4px}
-.imei-lbl{font-size:10px;color:var(--text-tertiary)}
-
-.sub-promo{border:1px solid var(--blue-mid);border-radius:var(--radius-md);padding:16px;background:#F5FAFE}
-.sub-promo .sub-title{color:var(--blue);border-bottom-color:var(--blue-mid)}
-
-.sub-general{border:1px solid var(--border);border-radius:var(--radius-md);padding:16px;background:var(--bg-secondary)}
-.sub-general .sub-title{color:var(--text-secondary);border-bottom-color:var(--border)}
+.ql-toolbar.ql-snow{border-radius:var(--radius-md) var(--radius-md) 0 0;border-color:var(--border);background:var(--bg-secondary);font-family:var(--font)}
+.ql-container.ql-snow{border-radius:0 0 var(--radius-md) var(--radius-md);border-color:var(--border);font-family:var(--font);font-size:13px}
+.ql-editor{min-height:130px;line-height:1.7;color:var(--text-primary)}
+.ql-editor.ql-blank::before{color:var(--text-tertiary);font-style:normal}
+.content-view{width:100%;min-height:110px;padding:10px 12px;border:1px solid var(--border);border-radius:var(--radius-md);background:var(--bg-secondary);font-size:13px;line-height:1.7;color:var(--text-secondary)}
+.content-view p{margin:0}.content-view ul,.content-view ol{padding-left:18px}
 
 .attach-row{display:flex;gap:8px;flex-wrap:wrap}
 .attach-box{width:64px;height:64px;border:1px solid var(--border);border-radius:var(--radius-md);background:var(--bg-secondary);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:9px;color:var(--text-tertiary);text-align:center;cursor:pointer}
@@ -243,51 +239,9 @@ body{font-family:var(--font);background:var(--bg-tertiary);color:var(--text-prim
           <button class="tp error-on" id="e-error" onclick="setEditType('error')">개통오류</button>
           <button class="tp" id="e-promo" onclick="setEditType('promo')">프로모션</button>
           <button class="tp" id="e-general" onclick="setEditType('general')">일반VOC</button>
+          <button class="tp" id="e-gangseong" onclick="setEditType('gangseong')">강성VOC</button>
         </div>
-        <div class="hint">유형 선택에 따라 아래 서브섹션이 토글됩니다.</div>
-
-        <div class="sub-error" id="e-sub-error">
-          <div class="sub-title">개통오류 입력 필드</div>
-          <div class="fg fg-3">
-            <div class="fw"><span class="fl">개통 시도 채널</span><input class="fi" id="ef-channel" placeholder="선택/입력"></div>
-            <div class="fw"><span class="fl">이용 중인 통신사</span><input class="fi" id="ef-telecom" placeholder="선택/입력"></div>
-            <div class="fw"><span class="fl">SIM 유형</span><input class="fi" id="ef-sim" placeholder="선택/입력"></div>
-          </div>
-          <div class="fg fg-3">
-            <div class="fw"><span class="fl">업무처리 유형</span><input class="fi" id="ef-worktype" placeholder="선택/입력"></div>
-            <div class="fw"><span class="fl">개통 SIM 유형</span><input class="fi" id="ef-actsim" placeholder="선택/입력"></div>
-            <div class="fw"><span class="fl">개통할 단말</span><input class="fi" id="ef-device" placeholder="선택/입력"></div>
-          </div>
-          <div class="fg fg-3">
-            <div class="fw"><span class="fl">모델명</span><input class="fi" id="ef-model" placeholder="입력 필드"></div>
-            <div class="fw"><span class="fl">용량/색상</span><input class="fi" id="ef-color" placeholder="입력 필드"></div>
-            <div class="fw"><span class="fl">OMD/OEM</span><input class="fi" id="ef-oem" placeholder="선택/입력"></div>
-          </div>
-          <div class="fg fg-1"><div class="fw"><span class="fl">문의(오류) 단계 및 문구</span><input class="fi" id="ef-errortext" placeholder="입력 필드"></div></div>
-          <div class="fg fg-1"><div class="fw"><span class="fl">고객 주장/확인사항/요청사항</span><textarea class="fi area" id="ef-content" placeholder="텍스트 영역"></textarea></div></div>
-
-          <div class="sub-divider"></div>
-          <div class="sub-title">기기 정보 (AIR 개통 단말)</div>
-          <div class="fg fg-1" style="margin-bottom:10px"><div class="fw"><span class="fl">일련번호</span><input class="fi" id="ef-serial" placeholder="입력 필드"></div></div>
-          <div class="imei-hd"><div></div><div class="imei-lbl">IMEI 번호</div><div class="imei-lbl">통신사명</div><div class="imei-lbl">SIM 유형</div><div class="imei-lbl">사용여부</div></div>
-          <div class="fg fg-5" style="margin-bottom:6px"><div class="fv" style="font-size:11px">IMEI 1</div><input class="fi mono" id="ef-imei1"><input class="fi" id="ef-imei1-tel" style="font-size:11px"><input class="fi" id="ef-imei1-sim" style="font-size:11px"><input class="fi" id="ef-imei1-use" style="font-size:11px"></div>
-          <div class="fg fg-5" style="margin-bottom:10px"><div class="fv" style="font-size:11px">IMEI 2</div><input class="fi mono" id="ef-imei2"><input class="fi" id="ef-imei2-tel" style="font-size:11px"><input class="fi" id="ef-imei2-sim" style="font-size:11px"><input class="fi" id="ef-imei2-use" style="font-size:11px"></div>
-          <div class="fg fg-1" style="margin-bottom:0"><div class="fw"><span class="fl">EID</span><input class="fi" id="ef-eid" placeholder="입력 필드"></div></div>
-        </div>
-
-        <div class="sub-promo" id="e-sub-promo" style="display:none">
-          <div class="sub-title">프로모션 입력 필드</div>
-          <div class="fg fg-2">
-            <div class="fw"><span class="fl">프로모션명</span><input class="fi" id="pf-name" placeholder="입력 필드"></div>
-            <div class="fw"><span class="fl">프로모션 코드</span><input class="fi" id="pf-code" placeholder="입력 필드"></div>
-          </div>
-          <div class="fg fg-1" style="margin-bottom:0"><div class="fw"><span class="fl">고객 주장/확인사항/요청사항</span><textarea class="fi area" id="pf-content" placeholder="텍스트 영역"></textarea></div></div>
-        </div>
-
-        <div class="sub-general" id="e-sub-general" style="display:none">
-          <div class="sub-title">일반VOC</div>
-          <div class="fg fg-1" style="margin-bottom:0"><div class="fw"><span class="fl">고객 주장/확인사항/요청사항</span><textarea class="fi area" id="gf-content" placeholder="텍스트 영역"></textarea></div></div>
-        </div>
+        <div class="fw"><span class="fl">고객 주장 / 확인사항 / 요청사항</span><div id="editor-quill"></div></div>
       </div></div>
 
       <div class="card"><div class="card-body">
@@ -365,50 +319,9 @@ body{font-family:var(--font);background:var(--bg-tertiary);color:var(--text-prim
           <button class="tp" id="v-error">개통오류</button>
           <button class="tp" id="v-promo">프로모션</button>
           <button class="tp" id="v-general">일반VOC</button>
+          <button class="tp" id="v-gangseong">강성VOC</button>
         </div>
-
-        <div class="sub-error" id="v-sub-error">
-          <div class="sub-title">개통오류 상세 정보</div>
-          <div class="fg fg-3">
-            <div class="fw"><span class="fl">개통 시도 채널</span><div class="fv" id="vv-channel"></div></div>
-            <div class="fw"><span class="fl">이용 중인 통신사</span><div class="fv" id="vv-telecom"></div></div>
-            <div class="fw"><span class="fl">SIM 유형</span><div class="fv" id="vv-sim"></div></div>
-          </div>
-          <div class="fg fg-3">
-            <div class="fw"><span class="fl">업무처리 유형</span><div class="fv" id="vv-worktype"></div></div>
-            <div class="fw"><span class="fl">개통 SIM 유형</span><div class="fv" id="vv-actsim"></div></div>
-            <div class="fw"><span class="fl">개통할 단말</span><div class="fv" id="vv-device"></div></div>
-          </div>
-          <div class="fg fg-3">
-            <div class="fw"><span class="fl">모델명</span><div class="fv" id="vv-model"></div></div>
-            <div class="fw"><span class="fl">용량/색상</span><div class="fv" id="vv-color"></div></div>
-            <div class="fw"><span class="fl">OMD/OEM</span><div class="fv" id="vv-oem"></div></div>
-          </div>
-          <div class="fg fg-1"><div class="fw"><span class="fl">문의(오류) 단계 및 문구</span><div class="fv" id="vv-errortext"></div></div></div>
-          <div class="fg fg-1"><div class="fw"><span class="fl">고객 주장/확인사항/요청사항</span><div class="fv area" id="vv-content"></div></div></div>
-
-          <div class="sub-divider"></div>
-          <div class="sub-title">기기 정보 (AIR 개통 단말)</div>
-          <div class="fg fg-1" style="margin-bottom:10px"><div class="fw"><span class="fl">일련번호</span><div class="fv mono" id="vv-serial"></div></div></div>
-          <div class="imei-hd"><div></div><div class="imei-lbl">IMEI 번호</div><div class="imei-lbl">통신사명</div><div class="imei-lbl">SIM 유형</div><div class="imei-lbl">사용여부</div></div>
-          <div class="fg fg-5" style="margin-bottom:6px"><div class="fv" style="font-size:11px">IMEI 1</div><div class="fv mono" id="vv-imei1" style="font-size:11px"></div><div class="fv" id="vv-imei1-tel" style="font-size:11px"></div><div class="fv" id="vv-imei1-sim" style="font-size:11px"></div><div class="fv" id="vv-imei1-use" style="font-size:11px"></div></div>
-          <div class="fg fg-5" style="margin-bottom:10px"><div class="fv" style="font-size:11px">IMEI 2</div><div class="fv mono" id="vv-imei2" style="font-size:11px"></div><div class="fv" id="vv-imei2-tel" style="font-size:11px"></div><div class="fv" id="vv-imei2-sim" style="font-size:11px"></div><div class="fv" id="vv-imei2-use" style="font-size:11px"></div></div>
-          <div class="fg fg-1" style="margin-bottom:0"><div class="fw"><span class="fl">EID</span><div class="fv mono" id="vv-eid"></div></div></div>
-        </div>
-
-        <div class="sub-promo" id="v-sub-promo" style="display:none">
-          <div class="sub-title">프로모션 상세 정보</div>
-          <div class="fg fg-2">
-            <div class="fw"><span class="fl">프로모션명</span><div class="fv" id="vp-name"></div></div>
-            <div class="fw"><span class="fl">프로모션 코드</span><div class="fv" id="vp-code"></div></div>
-          </div>
-          <div class="fg fg-1" style="margin-bottom:0"><div class="fw"><span class="fl">고객 주장/확인사항/요청사항</span><div class="fv area" id="vp-content"></div></div></div>
-        </div>
-
-        <div class="sub-general" id="v-sub-general" style="display:none">
-          <div class="sub-title">일반VOC</div>
-          <div class="fg fg-1" style="margin-bottom:0"><div class="fw"><span class="fl">고객 주장/확인사항/요청사항</span><div class="fv area" id="vg-content"></div></div></div>
-        </div>
+        <div class="fw"><span class="fl">고객 주장 / 확인사항 / 요청사항</span><div class="content-view" id="v-content"></div></div>
       </div></div>
 
       <div class="card"><div class="card-body">
@@ -435,7 +348,23 @@ body{font-family:var(--font);background:var(--bg-tertiary);color:var(--text-prim
 
 <div class="toast" id="toast"></div>
 
+<script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
 <script>
+var quill = new Quill('#editor-quill', {
+  theme: 'snow',
+  placeholder: '텍스트 영역',
+  modules: { toolbar: [
+    [{ header: [false, 1, 2, 3] }],
+    ['bold', 'italic', 'underline', 'strike'],
+    [{ size: ['small', false, 'large', 'huge'] }],
+    [{ align: [] }],
+    [{ list: 'bullet' }, { list: 'ordered' }],
+    [{ indent: '-1' }, { indent: '+1' }],
+    ['link', 'image'],
+    ['clean']
+  ]}
+});
+
 let vocList = [
   {id:'V20260610-0047', title:'개통 중 본인 확인 실패 오류 반복 발생 — Galaxy S24 단말, 재시도 시에도 동일 증상 지속', type:'error', status:'review', writer:'김고센', assignee:'이지연', regdate:'26.06.10',
    customer:'김민수', phone:'010-1234-5678', userid:'mskim_91', receive:'2026.06.10 09:12',
@@ -480,7 +409,7 @@ let currentSearchTab = '번호';
 let currentStatFilter = '전체';
 
 const statusLabel = {new:'접수', review:'처리중', done:'완료', hold:'보류'};
-const typeLabel = {error:'개통오류', promo:'프로모션', general:'일반VOC'};
+const typeLabel = {error:'개통오류', promo:'프로모션', general:'일반VOC', gangseong:'강성VOC'};
 
 function showScreen(id){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
@@ -563,11 +492,10 @@ function renderList(){
 }
 
 function resetEditForm(){
-  ['f-title','f-receive','f-assignee','f-customer','f-phone','f-userid',
-   'ef-channel','ef-telecom','ef-sim','ef-worktype','ef-actsim','ef-device','ef-model','ef-color','ef-oem','ef-errortext','ef-serial',
-   'ef-imei1','ef-imei1-tel','ef-imei1-sim','ef-imei1-use','ef-imei2','ef-imei2-tel','ef-imei2-sim','ef-imei2-use','ef-eid',
-   'pf-name','pf-code'].forEach(id=>{ const el=document.getElementById(id); if(el) el.value=''; });
-  ['ef-content','pf-content','gf-content'].forEach(id=>{ const el=document.getElementById(id); if(el) el.value=''; });
+  ['f-title','f-receive','f-assignee','f-customer','f-phone','f-userid'].forEach(id=>{
+    const el=document.getElementById(id); if(el) el.value='';
+  });
+  quill.root.innerHTML='';
   setEditType('error');
 }
 function fillEditFormFromVoc(v){
@@ -578,44 +506,13 @@ function fillEditFormFromVoc(v){
   document.getElementById('f-phone').value = v.phone||'';
   document.getElementById('f-userid').value = v.userid||'';
   setEditType(v.type);
-  if(v.type==='error'){
-    document.getElementById('ef-channel').value=v.channel||'';
-    document.getElementById('ef-telecom').value=v.telecom||'';
-    document.getElementById('ef-sim').value=v.sim||'';
-    document.getElementById('ef-worktype').value=v.worktype||'';
-    document.getElementById('ef-actsim').value=v.actsim||'';
-    document.getElementById('ef-device').value=v.device||'';
-    document.getElementById('ef-model').value=v.model||'';
-    document.getElementById('ef-color').value=v.color||'';
-    document.getElementById('ef-oem').value=v.oem||'';
-    document.getElementById('ef-errortext').value=v.errortext||'';
-    document.getElementById('ef-content').value=v.content||'';
-    document.getElementById('ef-serial').value=v.serial||'';
-    document.getElementById('ef-imei1').value=v.imei1||'';
-    document.getElementById('ef-imei1-tel').value=v.imei1tel||'';
-    document.getElementById('ef-imei1-sim').value=v.imei1sim||'';
-    document.getElementById('ef-imei1-use').value=v.imei1use||'';
-    document.getElementById('ef-imei2').value=v.imei2||'';
-    document.getElementById('ef-imei2-tel').value=v.imei2tel||'';
-    document.getElementById('ef-imei2-sim').value=v.imei2sim||'';
-    document.getElementById('ef-imei2-use').value=v.imei2use||'';
-    document.getElementById('ef-eid').value=v.eid||'';
-  } else if(v.type==='promo'){
-    document.getElementById('pf-name').value=v.promoName||'';
-    document.getElementById('pf-code').value=v.promoCode||'';
-    document.getElementById('pf-content').value=v.content||'';
-  } else {
-    document.getElementById('gf-content').value=v.content||'';
-  }
+  quill.root.innerHTML = v.content||'';
 }
 function setEditType(t){
   currentEditType = t;
-  document.getElementById('e-sub-error').style.display = t==='error'?'block':'none';
-  document.getElementById('e-sub-promo').style.display = t==='promo'?'block':'none';
-  document.getElementById('e-sub-general').style.display = t==='general'?'block':'none';
-  document.getElementById('e-error').className='tp'+(t==='error'?' error-on':'');
-  document.getElementById('e-promo').className='tp'+(t==='promo'?' promo-on':'');
-  document.getElementById('e-general').className='tp'+(t==='general'?' general-on':'');
+  ['error','promo','general','gangseong'].forEach(x=>{
+    document.getElementById('e-'+x).className='tp'+(t===x?' '+x+'-on':'');
+  });
 }
 
 function saveVoc(){
@@ -629,24 +526,9 @@ function saveVoc(){
     customer: document.getElementById('f-customer').value.trim(),
     phone: document.getElementById('f-phone').value.trim(),
     userid: document.getElementById('f-userid').value.trim(),
-    type: currentEditType
+    type: currentEditType,
+    content: quill.root.innerHTML === '<p><br></p>' ? '' : quill.root.innerHTML
   };
-  if(currentEditType==='error'){
-    Object.assign(base,{
-      channel:document.getElementById('ef-channel').value, telecom:document.getElementById('ef-telecom').value, sim:document.getElementById('ef-sim').value,
-      worktype:document.getElementById('ef-worktype').value, actsim:document.getElementById('ef-actsim').value, device:document.getElementById('ef-device').value,
-      model:document.getElementById('ef-model').value, color:document.getElementById('ef-color').value, oem:document.getElementById('ef-oem').value,
-      errortext:document.getElementById('ef-errortext').value, content:document.getElementById('ef-content').value,
-      serial:document.getElementById('ef-serial').value,
-      imei1:document.getElementById('ef-imei1').value, imei1tel:document.getElementById('ef-imei1-tel').value, imei1sim:document.getElementById('ef-imei1-sim').value, imei1use:document.getElementById('ef-imei1-use').value,
-      imei2:document.getElementById('ef-imei2').value, imei2tel:document.getElementById('ef-imei2-tel').value, imei2sim:document.getElementById('ef-imei2-sim').value, imei2use:document.getElementById('ef-imei2-use').value,
-      eid:document.getElementById('ef-eid').value
-    });
-  } else if(currentEditType==='promo'){
-    Object.assign(base,{ promoName:document.getElementById('pf-name').value, promoCode:document.getElementById('pf-code').value, content:document.getElementById('pf-content').value });
-  } else {
-    Object.assign(base,{ content:document.getElementById('gf-content').value });
-  }
 
   const today = new Date(2026,5,16);
   const ymd = `${today.getFullYear()}${String(today.getMonth()+1).padStart(2,'0')}${String(today.getDate()).padStart(2,'0')}`;
@@ -690,39 +572,11 @@ function renderView(id){
 
   document.getElementById('history-rows').innerHTML = v.history.map(h=>`<tr><td><span class="hbadge">${statusLabel[h.s]}</span></td><td>${h.who}</td><td>${h.note}</td><td>${h.time}</td></tr>`).join('');
 
-  ['error','promo','general'].forEach(t=>{
-    document.getElementById('v-sub-'+t).style.display = v.type===t?'block':'none';
+  ['error','promo','general','gangseong'].forEach(t=>{
     document.getElementById('v-'+t).className = 'tp'+(v.type===t?' '+t+'-on':'');
   });
-  if(v.type==='error'){
-    document.getElementById('vv-channel').textContent=v.channel||'-';
-    document.getElementById('vv-telecom').textContent=v.telecom||'-';
-    document.getElementById('vv-sim').textContent=v.sim||'-';
-    document.getElementById('vv-worktype').textContent=v.worktype||'-';
-    document.getElementById('vv-actsim').textContent=v.actsim||'-';
-    document.getElementById('vv-device').textContent=v.device||'-';
-    document.getElementById('vv-model').textContent=v.model||'-';
-    document.getElementById('vv-color').textContent=v.color||'-';
-    document.getElementById('vv-oem').textContent=v.oem||'-';
-    document.getElementById('vv-errortext').textContent=v.errortext||'-';
-    document.getElementById('vv-content').textContent=v.content||'-';
-    document.getElementById('vv-serial').textContent=v.serial||'-';
-    document.getElementById('vv-imei1').textContent=v.imei1||'-';
-    document.getElementById('vv-imei1-tel').textContent=v.imei1tel||'-';
-    document.getElementById('vv-imei1-sim').textContent=v.imei1sim||'-';
-    document.getElementById('vv-imei1-use').textContent=v.imei1use||'-';
-    document.getElementById('vv-imei2').textContent=v.imei2||'-';
-    document.getElementById('vv-imei2-tel').textContent=v.imei2tel||'-';
-    document.getElementById('vv-imei2-sim').textContent=v.imei2sim||'-';
-    document.getElementById('vv-imei2-use').textContent=v.imei2use||'-';
-    document.getElementById('vv-eid').textContent=v.eid||'-';
-  } else if(v.type==='promo'){
-    document.getElementById('vp-name').textContent=v.promoName||'-';
-    document.getElementById('vp-code').textContent=v.promoCode||'-';
-    document.getElementById('vp-content').textContent=v.content||'-';
-  } else {
-    document.getElementById('vg-content').textContent=v.content||'-';
-  }
+  const cv = document.getElementById('v-content');
+  cv.innerHTML = v.content || '<span style="color:var(--text-tertiary)">-</span>';
 
   renderComments(v);
 }
