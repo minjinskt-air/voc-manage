@@ -186,13 +186,13 @@ body{font-family:var(--font);background:var(--bg-tertiary);color:var(--text-prim
 
       <div class="search-area">
         <div class="search-tabs" id="search-tabs">
-          <div class="search-tab active" data-tab="번호">VOC 번호</div>
+          <div class="search-tab active" data-tab="티켓번호">티켓번호</div>
           <div class="search-tab" data-tab="제목">VOC 제목</div>
           <div class="search-tab" data-tab="담당자">담당자</div>
           <div class="search-tab" data-tab="userid">User-ID</div>
         </div>
         <div class="search-row">
-          <input class="search-input" id="search-input" placeholder="VOC 번호 입력 (예: V20260610-0047)">
+          <input class="search-input" id="search-input" placeholder="티켓번호 입력">
           <button class="btn btn-primary" onclick="renderList()">검색</button>
         </div>
       </div>
@@ -408,7 +408,7 @@ let seq = 47;
 let currentEditingId = null;
 let currentViewId = null;
 let currentEditType = 'error';
-let currentSearchTab = '번호';
+let currentSearchTab = '티켓번호';
 let currentStatFilter = '전체';
 
 const statusLabel = {new:'접수', review:'처리중', done:'완료', hold:'보류'};
@@ -459,7 +459,7 @@ document.getElementById('search-tabs').addEventListener('click', e=>{
   document.querySelectorAll('.search-tab').forEach(t=>t.classList.remove('active'));
   tab.classList.add('active');
   currentSearchTab = tab.dataset.tab;
-  const ph = {번호:'VOC 번호 입력 (예: V20260610-0047)', 제목:'VOC 제목 입력', 담당자:'담당자 이름 입력', userid:'User ID 입력'};
+  const ph = {티켓번호:'티켓번호 입력', 제목:'VOC 제목 입력', 담당자:'담당자 이름 입력', userid:'User ID 입력'};
   document.getElementById('search-input').placeholder = ph[currentSearchTab];
 });
 
@@ -469,7 +469,7 @@ function renderList(){
   let filtered = vocList.filter(v=>{
     if(currentStatFilter!=='전체' && statusLabel[v.status]!==currentStatFilter) return false;
     if(!q) return true;
-    if(currentSearchTab==='번호') return v.id.toLowerCase().includes(q);
+    if(currentSearchTab==='티켓번호') return (v.ticket||'').toLowerCase().includes(q);
     if(currentSearchTab==='제목') return v.title.toLowerCase().includes(q);
     if(currentSearchTab==='담당자') return (v.assignee||'').toLowerCase().includes(q);
     if(currentSearchTab==='userid') return (v.userid||'').toLowerCase().includes(q);
