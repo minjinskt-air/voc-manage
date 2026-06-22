@@ -215,11 +215,22 @@ body{font-family:var(--font);background:var(--bg-tertiary);color:var(--text-prim
       <div class="card"><div class="card-body">
         <div class="card-title">① VOC 정보</div>
         <div class="fg fg-1"><div class="fw"><span class="fl">VOC 제목 *</span><input class="fi" id="f-title" placeholder="VOC 제목을 입력해 주세요"></div></div>
-        <div class="fg fg-2" style="margin-bottom:0">
+        <div class="fg fg-2">
           <div class="fw"><span class="fl">VOC 수신일자</span><input class="fi" id="f-receive" placeholder="YYYY-MM-DD HH:MM"></div>
           <div>
             <span class="fl">담당자</span>
             <div class="assignee-row"><input class="assignee-input" id="f-assignee" placeholder="선택된 담당자 없음" style="border:1px solid var(--border)"><button class="assignee-btn" onclick="alert('담당자 검색 팝업 (구현 예정)')">검색</button></div>
+          </div>
+        </div>
+        <div class="fg fg-2" style="margin-bottom:0">
+          <div class="fw"><span class="fl">상담티켓 번호</span><input class="fi" id="f-ticket" placeholder="입력 필드"></div>
+          <div class="fw"><span class="fl">VOC 카테고리</span>
+            <select class="fi" id="f-category" onchange="currentEditType=this.value">
+              <option value="error">개통오류</option>
+              <option value="promo">프로모션</option>
+              <option value="general">일반VOC</option>
+              <option value="gangseong">강성VOC</option>
+            </select>
           </div>
         </div>
       </div></div>
@@ -235,12 +246,6 @@ body{font-family:var(--font);background:var(--bg-tertiary);color:var(--text-prim
 
       <div class="card"><div class="card-body">
         <div class="card-title">③ VOC 유형 및 내용</div>
-        <div class="type-pills">
-          <button class="tp error-on" id="e-error" onclick="setEditType('error')">개통오류</button>
-          <button class="tp" id="e-promo" onclick="setEditType('promo')">프로모션</button>
-          <button class="tp" id="e-general" onclick="setEditType('general')">일반VOC</button>
-          <button class="tp" id="e-gangseong" onclick="setEditType('gangseong')">강성VOC</button>
-        </div>
         <div class="fw"><span class="fl">고객 주장 / 확인사항 / 요청사항</span><div id="editor-quill"></div></div>
       </div></div>
 
@@ -295,12 +300,16 @@ body{font-family:var(--font);background:var(--bg-tertiary);color:var(--text-prim
       <div class="card"><div class="card-body">
         <div class="card-title">① VOC 정보</div>
         <div class="fg fg-1"><div class="fw"><span class="fl">VOC 제목</span><div class="fv" id="view-title"></div></div></div>
-        <div class="fg fg-2" style="margin-bottom:0">
+        <div class="fg fg-2">
           <div class="fw"><span class="fl">VOC 수신일자</span><div class="fv" id="view-receive"></div></div>
           <div>
             <span class="fl">담당자</span>
             <div class="assignee-row"><div class="assignee-input" id="view-assignee2" style="background:var(--bg-secondary);color:var(--text-secondary)">미배정</div><button class="assignee-btn" onclick="alert('담당자 재지정 팝업 (구현 예정)')">재지정</button></div>
           </div>
+        </div>
+        <div class="fg fg-2" style="margin-bottom:0">
+          <div class="fw"><span class="fl">상담티켓 번호</span><div class="fv" id="view-ticket"></div></div>
+          <div class="fw"><span class="fl">VOC 카테고리</span><div class="fv" id="view-category"></div></div>
         </div>
       </div></div>
 
@@ -315,12 +324,6 @@ body{font-family:var(--font);background:var(--bg-tertiary);color:var(--text-prim
 
       <div class="card"><div class="card-body">
         <div class="card-title">③ VOC 유형 및 내용</div>
-        <div class="type-pills" id="view-type-pills">
-          <button class="tp" id="v-error">개통오류</button>
-          <button class="tp" id="v-promo">프로모션</button>
-          <button class="tp" id="v-general">일반VOC</button>
-          <button class="tp" id="v-gangseong">강성VOC</button>
-        </div>
         <div class="fw"><span class="fl">고객 주장 / 확인사항 / 요청사항</span><div class="content-view" id="v-content"></div></div>
       </div></div>
 
@@ -492,11 +495,12 @@ function renderList(){
 }
 
 function resetEditForm(){
-  ['f-title','f-receive','f-assignee','f-customer','f-phone','f-userid'].forEach(id=>{
+  ['f-title','f-receive','f-assignee','f-customer','f-phone','f-userid','f-ticket'].forEach(id=>{
     const el=document.getElementById(id); if(el) el.value='';
   });
+  document.getElementById('f-category').value='error';
+  currentEditType='error';
   quill.root.innerHTML='';
-  setEditType('error');
 }
 function fillEditFormFromVoc(v){
   document.getElementById('f-title').value = v.title;
@@ -505,15 +509,12 @@ function fillEditFormFromVoc(v){
   document.getElementById('f-customer').value = v.customer||'';
   document.getElementById('f-phone').value = v.phone||'';
   document.getElementById('f-userid').value = v.userid||'';
-  setEditType(v.type);
+  document.getElementById('f-ticket').value = v.ticket||'';
+  document.getElementById('f-category').value = v.type||'error';
+  currentEditType = v.type||'error';
   quill.root.innerHTML = v.content||'';
 }
-function setEditType(t){
-  currentEditType = t;
-  ['error','promo','general','gangseong'].forEach(x=>{
-    document.getElementById('e-'+x).className='tp'+(t===x?' '+x+'-on':'');
-  });
-}
+function setEditType(t){ currentEditType=t; }
 
 function saveVoc(){
   const title = document.getElementById('f-title').value.trim();
@@ -526,7 +527,8 @@ function saveVoc(){
     customer: document.getElementById('f-customer').value.trim(),
     phone: document.getElementById('f-phone').value.trim(),
     userid: document.getElementById('f-userid').value.trim(),
-    type: currentEditType,
+    ticket: document.getElementById('f-ticket').value.trim(),
+    type: document.getElementById('f-category').value,
     content: quill.root.innerHTML === '<p><br></p>' ? '' : quill.root.innerHTML
   };
 
@@ -572,9 +574,8 @@ function renderView(id){
 
   document.getElementById('history-rows').innerHTML = v.history.map(h=>`<tr><td><span class="hbadge">${statusLabel[h.s]}</span></td><td>${h.who}</td><td>${h.note}</td><td>${h.time}</td></tr>`).join('');
 
-  ['error','promo','general','gangseong'].forEach(t=>{
-    document.getElementById('v-'+t).className = 'tp'+(v.type===t?' '+t+'-on':'');
-  });
+  document.getElementById('view-ticket').textContent = v.ticket||'-';
+  document.getElementById('view-category').textContent = typeLabel[v.type]||'-';
   const cv = document.getElementById('v-content');
   cv.innerHTML = v.content || '<span style="color:var(--text-tertiary)">-</span>';
 
