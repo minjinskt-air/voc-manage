@@ -289,7 +289,7 @@ body{font-family:var(--font);background:var(--bg-tertiary);color:var(--text-prim
         <div class="history-bar">
           <div class="history-label">처리 이력 (변경자 + 일시 자동 기록)</div>
           <table class="htable">
-            <tr><th>상태</th><th>변경자</th><th>비고</th><th>변경일시</th></tr>
+            <tr><th>상태</th><th>변경자</th><th>변경일시</th></tr>
             <tbody id="history-rows"></tbody>
           </table>
         </div>
@@ -572,7 +572,7 @@ function renderView(id){
 
   document.querySelectorAll('#status-btns .s-btn').forEach(b=>{ b.className='s-btn'+(b.dataset.s===v.status?' cur-'+v.status:''); });
 
-  document.getElementById('history-rows').innerHTML = v.history.map(h=>`<tr><td><span class="hbadge">${statusLabel[h.s]}</span></td><td>${h.who}</td><td>${h.note}</td><td>${h.time}</td></tr>`).join('');
+  document.getElementById('history-rows').innerHTML = v.history.map(h=>`<tr><td><span class="hbadge">${statusLabel[h.s]}</span></td><td>${h.who}</td><td>${h.time}</td></tr>`).join('');
 
   document.getElementById('view-ticket').textContent = v.ticket||'-';
   document.getElementById('view-category').textContent = typeLabel[v.type]||'-';
